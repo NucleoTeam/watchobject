@@ -1,0 +1,23 @@
+{
+  "name": "watchobject",
+  "version": "1.0.0",
+  "description": "watch for specific changes within an object",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NucleoTeam/watchobject.git"
+  },
+  "keywords": [
+    "node",
+    "proxy"
+  ],
+  "author": "Nathaniel Davidson <nathaniel.davidson@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NucleoTeam/watchobject/issues"
+  },
+  "homepage": "https://github.com/NucleoTeam/watchobject#readme"
+}
