@@ -1,4 +1,4 @@
-class WatchObject {
+exports.WatchObject = class {
   constructor(){
     this.objects = {};
     this.triggers = {
@@ -67,4 +67,3 @@ class WatchObject {
     return self.objects[object._uniqueIdentifier];
   }
 }
-exports = WatchObject;
