@@ -28,13 +28,11 @@ exports.WatchObject = class {
     var remove = keys.length;
     for(var x=0;x<keys.length;x++) {
       if (self.triggers[type][object._uniqueIdentifier][keys[x]]) {
-        for (var i = 0; i < self.triggers[type][object._uniqueIdentifier][keys[x]].length; i++) {
-          if (self.triggers[type][object._uniqueIdentifier][keys[x]][i][3] == watcherId) {
-            self.triggers[type][object._uniqueIdentifier][keys[x]].splice(i, 1); // remove watched conditional
-            remove--;
-            if(remove==0){
-              return true;
-            }
+        if (self.triggers[type][object._uniqueIdentifier][keys[x]][watcherId]) {
+          delete self.triggers[type][object._uniqueIdentifier][keys[x]][watcherId]; // remove watched conditional
+          remove--;
+          if(remove==0){
+            return true;
           }
         }
       }
@@ -48,10 +46,7 @@ exports.WatchObject = class {
     if(!self.triggers[type][oTarget._uniqueIdentifier][sKey]){
       return;
     }
-    var triggers = self.triggers[type][oTarget._uniqueIdentifier][sKey];
-    var s = triggers.length;
-    for(var i=0;i<s;i++){
-      var tmp = triggers[i];
+    self.triggers[type][oTarget._uniqueIdentifier][sKey].forEach(function(tmp, id) {
       switch(type) {
         case "get":
           if(tmp[1](oTarget, sKey)){
@@ -64,7 +59,7 @@ exports.WatchObject = class {
           }
           break;
       }
-    }
+    });
   }
   proxy(object){
     var self = this;
@@ -107,9 +102,9 @@ exports.WatchObject = class {
     var id = self.obj2Hash();
     for(var i=0;i<keys.length;i++) {
       if (!self.triggers[type][object._uniqueIdentifier][keys[i]]) {
-        self.triggers[type][object._uniqueIdentifier][keys[i]] = new Array();
+        self.triggers[type][object._uniqueIdentifier][keys[i]] = {};
       }
-      self.triggers[type][object._uniqueIdentifier][keys[i]].push([parent, conditionalFunction, onCompleteFunction, id, key]);
+      self.triggers[type][object._uniqueIdentifier][keys[i]][id]=[parent, conditionalFunction, onCompleteFunction, id, key];
     }
     return proxied;
   }
