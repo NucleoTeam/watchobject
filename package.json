@@ -1,6 +1,6 @@
 {
   "name": "watchobject",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "watch for specific changes within an object",
   "main": "index.js",
   "scripts": {

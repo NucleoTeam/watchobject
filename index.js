@@ -54,12 +54,12 @@ exports.WatchObject = class {
       switch(type) {
         case "get":
           if(tmp[1](oTarget, sKey)){
-            tmp[2](tmp[0], oTarget, sKey, tmp[3]);
+            tmp[2](tmp[0], oTarget, sKey, tmp[3], tmp[4]);
           }
           break;
         case "set":
           if(tmp[1](oTarget, sKey, oTarget[sKey], newValue)){
-            tmp[2](tmp[0], oTarget, sKey, oTarget[sKey], newValue, tmp[3]);
+            tmp[2](tmp[0], oTarget, sKey, oTarget[sKey], newValue, tmp[3], tmp[4]);
           }
           break;
       }
