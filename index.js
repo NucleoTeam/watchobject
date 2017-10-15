@@ -16,6 +16,24 @@ exports.WatchObject = class {
 
     return text;
   }
+  remove(object, key, type, watcherId){
+    if(!object._uniqueIdentifier){
+      return;
+    }
+    if(!self.triggers[type][object._uniqueIdentifier]){
+      return;
+    }
+    if(!self.triggers[type][object._uniqueIdentifier][key]){
+      return;
+    }
+    for(var i=0;i<self.triggers[type][object._uniqueIdentifier][key].length;i++){
+     if(self.triggers[type][object._uniqueIdentifier][key][i][3]==watcherId){
+        self.triggers[type][object._uniqueIdentifier][key].splice(i,1); // remove watched conditional
+        return true;
+      }
+    }
+    return false;
+  }
   check(oTarget, sKey, newValue, type, self){
     if(!self.triggers[type][oTarget._uniqueIdentifier]){
       return;
@@ -30,12 +48,12 @@ exports.WatchObject = class {
       switch(type) {
         case "get":
           if(tmp[1](oTarget, sKey)){
-            tmp[2](tmp[0], oTarget, sKey);
+            tmp[2](tmp[0], oTarget, sKey, tmp[3]);
           }
           break;
         case "set":
           if(tmp[1](oTarget, sKey, oTarget[sKey], newValue)){
-            tmp[2](tmp[0], oTarget, sKey, oTarget[sKey], newValue);
+            tmp[2](tmp[0], oTarget, sKey, oTarget[sKey], newValue, tmp[3]);
           }
           break;
       }
@@ -81,7 +99,7 @@ exports.WatchObject = class {
     if(!self.triggers[type][object._uniqueIdentifier][key]){
       self.triggers[type][object._uniqueIdentifier][key] = new Array();
     }
-    self.triggers[type][object._uniqueIdentifier][key].push([parent, conditionalFunction, onCompleteFunction]);
+    self.triggers[type][object._uniqueIdentifier][key].push([parent, conditionalFunction, onCompleteFunction, self.obj2Hash()]);
     return proxied;
   }
 }
