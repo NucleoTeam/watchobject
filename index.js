@@ -41,7 +41,7 @@ exports.WatchObject = class {
       }
     }
   }
-  watch(parent, object, key, type, conditionalFunction, onCompleteFunction){
+  proxy(object){
     var self = this;
     if(!object._uniqueIdentifier){
       var validator = {
@@ -52,11 +52,29 @@ exports.WatchObject = class {
         set: function (oTarget, sKey, vValue) {
           self.check(oTarget, sKey, vValue, "set", self);
           return oTarget[sKey]=vValue;
-        },
+        }
       };
       object._uniqueIdentifier = self.obj2Hash();
       self.objects[object._uniqueIdentifier] = new Proxy(object, validator);
     }
+    return self.objects[object._uniqueIdentifier];
+  }
+  watchSetBoolean(parent, object, key, onCompleteFunction){
+    this.watch(parent, object, key, 'get', function(object, key, oldVal, newVal){
+      return newVal;
+    }, onCompleteFunction);
+  }
+  watchGet(parent, object, key, conditionalFunction, onCompleteFunction){
+    this.watch(parent, object, key, 'get', conditionalFunction, onCompleteFunction);
+  }
+  watchSet(parent, object, key, conditionalFunction, onCompleteFunction){
+    this.watch(parent, object, key, 'set', conditionalFunction, onCompleteFunction);
+  }
+  watch(parent, object, key, type, conditionalFunction, onCompleteFunction){
+    var self = this;
+
+    var proxied = self.proxy(object);
+
     if(!self.triggers[type][object._uniqueIdentifier]){
       self.triggers[type][object._uniqueIdentifier] = {};
     }
@@ -64,6 +82,6 @@ exports.WatchObject = class {
       self.triggers[type][object._uniqueIdentifier][key] = new Array();
     }
     self.triggers[type][object._uniqueIdentifier][key].push([parent, conditionalFunction, onCompleteFunction]);
-    return self.objects[object._uniqueIdentifier];
+    return proxied;
   }
 }
