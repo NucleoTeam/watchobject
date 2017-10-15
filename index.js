@@ -23,13 +23,19 @@ exports.WatchObject = class {
     if(!self.triggers[type][object._uniqueIdentifier]){
       return;
     }
-    if(!self.triggers[type][object._uniqueIdentifier][key]){
-      return;
-    }
-    for(var i=0;i<self.triggers[type][object._uniqueIdentifier][key].length;i++){
-     if(self.triggers[type][object._uniqueIdentifier][key][i][3]==watcherId){
-        self.triggers[type][object._uniqueIdentifier][key].splice(i,1); // remove watched conditional
-        return true;
+    var keys = key.split("|");
+    var remove = keys.length;
+    for(var x=0;x<keys.length;x++) {
+      if (self.triggers[type][object._uniqueIdentifier][keys[x]]) {
+        for (var i = 0; i < self.triggers[type][object._uniqueIdentifier][keys[x]].length; i++) {
+          if (self.triggers[type][object._uniqueIdentifier][keys[x]][i][3] == watcherId) {
+            self.triggers[type][object._uniqueIdentifier][keys[x]].splice(i, 1); // remove watched conditional
+            remove--;
+            if(remove==0){
+              return true;
+            }
+          }
+        }
       }
     }
     return false;
@@ -96,10 +102,14 @@ exports.WatchObject = class {
     if(!self.triggers[type][object._uniqueIdentifier]){
       self.triggers[type][object._uniqueIdentifier] = {};
     }
-    if(!self.triggers[type][object._uniqueIdentifier][key]){
-      self.triggers[type][object._uniqueIdentifier][key] = new Array();
+    var keys = key.split("|");
+    var id = self.obj2Hash();
+    for(var i=0;i<keys.length;i++) {
+      if (!self.triggers[type][object._uniqueIdentifier][keys[i]]) {
+        self.triggers[type][object._uniqueIdentifier][keys[i]] = new Array();
+      }
+      self.triggers[type][object._uniqueIdentifier][keys[i]].push([parent, conditionalFunction, onCompleteFunction, id, key]);
     }
-    self.triggers[type][object._uniqueIdentifier][key].push([parent, conditionalFunction, onCompleteFunction, self.obj2Hash()]);
     return proxied;
   }
 }
