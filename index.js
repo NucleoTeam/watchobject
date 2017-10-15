@@ -17,6 +17,7 @@ exports.WatchObject = class {
     return text;
   }
   remove(object, key, type, watcherId){
+    var self = this;
     if(!object._uniqueIdentifier){
       return;
     }
