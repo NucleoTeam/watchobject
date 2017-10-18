@@ -36,7 +36,7 @@ pWSocket.connect("127.0.0.1:2700");
 
 ```
 ----------
-##And for simpler logic
+## And for simpler logic
 ```
 var { WatchObject } = require('watchobject');
 var wObject = new WatchObject();
@@ -55,7 +55,7 @@ proxiedObject.president=0;
 ```
 ----------
 
-##Angular Data Service Example
+## Angular Data Service Example
 ```
 import { Injectable } from '@angular/core';
 import { WatchObject } from 'watchobject';
