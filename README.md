@@ -19,17 +19,17 @@ var pWSocket = wObject.proxy(wSocket);
 
 /* This creates a listener that will trigger when the connectStatus variable inside the pWSocket object changes. */
 wObject.watch(
-	this, 
-	pWSocket, 
-	"connectStatus", 
-	"set", 
-	(object, key, oldValue, newValue)=>{ // triggered before variable change
-		object[key]=newValue; // not necessary
-		return object[key] == "connected";
-	},
-	(parent, object, key, oldValue, newValue, id, keys)={
-		// this part is triggered when connectStatus="connected"
-	}
+  this, 
+  pWSocket, 
+  "connectStatus", 
+  "set", 
+  (object, key, oldValue, newValue)=>{ // triggered before variable change
+    object[key]=newValue; // not necessary
+    return object[key] == "connected";
+  },
+  (parent, object, key, oldValue, newValue, id, keys)={
+    // this part is triggered when connectStatus="connected"
+  }
 );
 
 pWSocket.connect("127.0.0.1:2700");
@@ -42,13 +42,13 @@ var { WatchObject } = require('watchobject');
 var wObject = new WatchObject();
 
 function conditional(object, key, oldValue, newValue){
-	return newValue==0;
+  return newValue==0;
 }
 function executeOrder626(){
-	console.log("Wipe them out, all of them!");
+  console.log("Wipe them out, all of them!");
 }
 var object = {
-	president:1
+  president:1
 };
 var proxiedObject = wObject.watch(null, object, "president", "set", conditional, executeOrder626);
 proxiedObject.president=0;
@@ -120,12 +120,11 @@ import { WatchObject } from 'watchobject';
 export class AppComponent {
 	constructor( private ws: WSService) {}
 	ngOnInit() {
-		self.ws.initialize('http://example.com/websocket',function(client, data){
-	
-	    });
-	    self.ws.executeWhenConnected(function(){
-			console.log("Connected to group websocket");
-	    });
+	  self.ws.initialize('http://example.com/websocket',function(client, data){
+	  });
+	  self.ws.executeWhenConnected(function(){
+	    console.log("Connected to group websocket");
+	  });
 	}
 }
 ```
