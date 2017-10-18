@@ -118,13 +118,13 @@ import { WatchObject } from 'watchobject';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	constructor( private ws: WSService) {}
-	ngOnInit() {
-	  self.ws.initialize('http://example.com/websocket',function(client, data){
-	  });
-	  self.ws.executeWhenConnected(function(){
-	    console.log("Connected to group websocket");
-	  });
-	}
+  constructor( private ws: WSService) {}
+  ngOnInit() {
+    self.ws.initialize('http://example.com/websocket',function(client, data){
+    });
+    self.ws.executeWhenConnected(function(){
+      console.log("Connected to group websocket");
+    });
+  }
 }
 ```
