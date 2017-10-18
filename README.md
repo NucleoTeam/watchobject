@@ -107,3 +107,25 @@ export class WSService{
   }
 }
 ```
+```
+import { Component } from '@angular/core';
+import { WSService } from './database/ws.service';
+import { WatchObject } from 'watchobject';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+	constructor( private ws: WSService) {}
+	ngOnInit() {
+		self.ws.initialize('http://example.com/websocket',function(client, data){
+	
+	    });
+	    self.ws.executeWhenConnected(function(){
+			console.log("Connected to group websocket");
+	    });
+	}
+}
+```
