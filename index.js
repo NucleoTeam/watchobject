@@ -46,7 +46,7 @@ exports.WatchObject = class {
     if(!self.triggers[type][oTarget._uniqueIdentifier][sKey]){
       return;
     }
-    Object.keys(self.triggers[type][oTarget._uniqueIdentifier][sKey].forEach(function(key) {
+    Object.keys(self.triggers[type][oTarget._uniqueIdentifier][sKey]).forEach(function(key) {
       var tmp = self.triggers[type][oTarget._uniqueIdentifier][sKey][key];
       switch(type) {
         case "get":
