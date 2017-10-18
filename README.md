@@ -67,7 +67,6 @@ export class WSService{
   private watchObject;
   private stompClient = null;
   private stompClientProxied = null;
-  private subscriptions = {};
   initialize(url:string, func){
     var self = this;
     var SocketJS = require('sockjs-client');
