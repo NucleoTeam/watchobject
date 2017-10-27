@@ -50,7 +50,7 @@ function executeOrder626(){
 var object = {
   president:1
 };
-var proxiedObject = wObject.watch(null, object, "president", "set", conditional, executeOrder626);
+var proxiedObject = wObject.watch(null, object, "president", "set", conditional, executeOrder626).proxy;
 proxiedObject.president=0;
 ```
 ----------
@@ -94,7 +94,7 @@ export class WSService{
         console.log("=========== removed observe on " + keys + " for object with id: " + object._uniqueIdentifier);
       }
       func();
-    });
+    }).proxy;
   }
   client(){
     return this.stompClient;
@@ -127,4 +127,38 @@ export class AppComponent {
     });
   }
 }
+```
+
+```
+var wObject = new WatchObject();
+var factoriedObject = wObject.watcherFactory();
+var object = {
+  president:0,
+  triggered:0
+};
+var proxy = wObject.proxy(object);
+var proxyFactory = factoriedObject
+  .parent(this)
+  .object(object)
+  .key("president")
+  .type("set")
+  .conditional(function(object, key, oldValue, newValue){
+    return newValue==1;
+  })
+  .complete(function(parent, object, key, oldValue, newValue, id, keys){
+    object.triggered=4
+  });
+proxyFactory.watch();
+proxyFactory
+  .conditional(function(object, key, oldValue, newValue){
+    return newValue==2;
+  })
+  .complete(function(parent, object, key, oldValue, newValue, id, keys){
+    object.triggered=3
+  });
+proxyFactory.watch();
+proxy.president=2
+assert.equal(3,object.triggered);
+proxy.president=1
+assert.equal(4,object.triggered);
 ```
